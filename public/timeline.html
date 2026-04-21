@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>大同市第二中学 | 校史时间轴·影像记忆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9f7f3;
+            color: #2c2b28;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ece4d8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bcab8a;
+            border-radius: 10px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        /* HERO 区域（背景 picture0.jpg） */
+        .hero {
+            position: relative;
+            padding: 60px 0 50px;
+            text-align: center;
+            border-bottom: 1px solid #e9dfd3;
+            background: url('picture0.jpg') center center / cover no-repeat;
+            background-color: #2f4b3c;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* 调整此数值改变遮罩不透明度 */
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-logo {
+            margin-bottom: 20px;
+        }
+        .school-badge {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            overflow: hidden;
+            border: 2px solid rgba(255,255,240,0.8);
+        }
+        .school-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .school-badge .placeholder-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9dfd3;
+            color: #a88258;
+            font-size: 2.5rem;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin-top: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .hero .sub {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: #fef0dd;
+            margin-top: 8px;
+            font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .hero .motto {
+            display: inline-block;
+            background: rgba(233, 221, 208, 0.85);
+            backdrop-filter: blur(4px);
+            padding: 8px 28px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2f4b3c;
+            margin-top: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .hero .motto i {
+            color: #c28a4b;
+            margin-right: 8px;
+        }
+        .baike-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(242, 235, 225, 0.9);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #4a3724;
+            text-decoration: none;
+            transition: background 0.2s;
+            margin-top: 12px;
+            backdrop-filter: blur(2px);
+        }
+        .baike-link:hover {
+            background: #e6d9cd;
+            color: #6b4c2c;
+        }
+        /* 时间轴布局 */
+        .timeline {
+            margin: 70px 0 50px;
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ddd0be, #bc9f7c, #ddd0be);
+            border-radius: 3px;
+            z-index: 0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: center;
+            z-index: 2;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: #faf3ea;
+            border: 3px solid #b28253;
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 0 5px rgba(178, 130, 83, 0.15);
+            transition: all 0.2s ease;
+        }
+        .timeline-left, .timeline-right {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .timeline-item:nth-child(odd) .timeline-left {
+            margin-right: auto;
+        }
+        .timeline-item:nth-child(odd) .timeline-right {
+            margin-left: auto;
+        }
+        .timeline-item:nth-child(even) .timeline-left {
+            margin-right: auto;
+        }
+        .timeline-item:nth-child(even) .timeline-right {
+            margin-left: auto;
+        }
+        .timeline-card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s;
+            border: 1px solid #f0e5d9;
+            overflow: hidden;
+            cursor: default;
+            width: 100%;
+        }
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 28px 36px -14px rgba(60, 40, 20, 0.2);
+            border-color: #ddcebc;
+        }
+        .timeline-media {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+        .media-item {
+            background: #fefcf8;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f0e5d9;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+        }
+        .media-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .media-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 4 / 3;
+        }
+        .media-caption {
+            padding: 10px 14px;
+            font-size: 0.75rem;
+            color: #7c6852;
+            background: #ffffff;
+            text-align: center;
+            border-top: 1px solid #f0e5d9;
+        }
+        /* 可点击图片链接样式 */
+        .map-link-card {
+            display: block;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .map-link-card:hover {
+            transform: scale(0.98);
+        }
+        /* 卡片内部样式 */
+        .card-header {
+            padding: 24px 28px 16px;
+            border-bottom: 1px solid #f1e9e0;
+            background: #ffffff;
+        }
+        .period-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #ac7c48;
+            letter-spacing: -0.2px;
+        }
+        .period-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 8px 0 6px;
+            color: #2c4b3e;
+        }
+        .period-sub {
+            font-size: 0.8rem;
+            background: #f8f1e9;
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 30px;
+            color: #8a6844;
+            font-weight: 500;
+        }
+        .card-summary {
+            padding: 18px 28px 12px;
+            background: #fefcf9;
+            color: #4f4438;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f3ece3;
+        }
+        .summary-text {
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .summary-text i {
+            color: #c28a4b;
+            width: 24px;
+            font-size: 1rem;
+        }
+        .card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1.8s ease-in-out;
+            background: #ffffff;
+            border-top: 1px solid transparent;
+        }
+        .card-details.expanded {
+            max-height: 1000px;
+            border-top-color: #f0e2d4;
+        }
+        .details-inner {
+            padding: 20px 28px 28px;
+            background: #ffffff;
+        }
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .event-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            border-left: 3px solid #e2cfbb;
+            padding-left: 18px;
+        }
+        .event-year-badge {
+            font-weight: 700;
+            background: #f3ebe2;
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            min-width: 85px;
+            text-align: center;
+            color: #9e6e3e;
+        }
+        .event-desc {
+            font-size: 0.9rem;
+            color: #3a3229;
+            line-height: 1.45;
+        }
+        .event-desc strong {
+            color: #b0682c;
+            font-weight: 700;
+        }
+        .stats-mini {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #faf6ef;
+            border-radius: 28px;
+            padding: 14px 20px;
+        }
+        .stats-mini span {
+            font-size: 0.8rem;
+            background: white;
+            padding: 4px 14px;
+            border-radius: 40px;
+            color: #6b4c2c;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        /* 荣誉展示区 */
+        .honor-grid {
+            background: #fffcf6;
+            border-radius: 48px;
+            padding: 48px 40px;
+            margin: 50px 0 60px;
+            border: 1px solid #ede2d4;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+        }
+        .honor-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #2f4b3c;
+        }
+        .honor-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 24px;
+        }
+        .honor-card {
+            background: white;
+            border-radius: 28px;
+            padding: 22px 18px;
+            text-align: center;
+            transition: all 0.2s;
+            border: 1px solid #f0e5d9;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.02);
+        }
+        .honor-card i {
+            font-size: 2rem;
+            color: #d9a066;
+            margin-bottom: 14px;
+        }
+        .honor-card h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .honor-card p {
+            font-size: 0.85rem;
+            color: #7c6852;
+        }
+        .legacy-footer {
+            text-align: center;
+            padding: 40px 24px 32px;
+            border-top: 1px solid #e9dfd3;
+            margin-top: 20px;
+        }
+        .school-motto {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #664d32;
+        }
+        .history-line {
+            font-size: 0.8rem;
+            color: #917b60;
+            margin-top: 12px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 24px;
+            background: #fbf7f0;
+            color: #9b846b;
+            font-size: 0.75rem;
+            border-top: 1px solid #ece2d6;
+        }
+        @media (max-width: 900px) {
+            .timeline::before {
+                left: 20px;
+                transform: none;
+            }
+            .timeline-dot {
+                left: 20px;
+                transform: translateY(-50%);
+                top: 50%;
+            }
+            .timeline-left, .timeline-right {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+                margin-right: 0 !important;
+            }
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 60px;
+            }
+            .timeline-item:nth-child(odd) .timeline-left,
+            .timeline-item:nth-child(even) .timeline-left {
+                order: 1;
+            }
+            .timeline-item:nth-child(odd) .timeline-right,
+            .timeline-item:nth-child(even) .timeline-right {
+                order: 2;
+                margin-top: 20px;
+            }
+            .timeline-media {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .media-item {
+                flex: 1;
+                min-width: 150px;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .event-item {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .details-inner {
+                padding: 16px 20px 24px;
+            }
+            .stats-mini span {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <div class="container">
+        <div class="hero-logo">
+            <div class="school-badge">
+                <img src="logo.png" alt="大同二中校徽" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=placeholder-icon><i class=\'fas fa-school\'></i></div>';">
+            </div>
+        </div>
+        <h1>大同市第二中学</h1>
+        <div class="sub">DATONG NO.2 MIDDLE SCHOOL · 1946 — 至今</div>
+        <div class="motto"><i class="fas fa-feather-alt"></i> 明德至善 · 博学笃行</div>
+        <div>
+            <a href="https://baike.baidu.com/item/%E5%A4%A7%E5%90%8C%E5%B8%82%E7%AC%AC%E4%BA%8C%E4%B8%AD%E5%AD%A6%E6%A0%A1/8421194" target="_blank" class="baike-link" rel="noopener noreferrer"><i class="fab fa-baidu"></i> 百度百科词条 <i class="fas fa-external-link-alt"></i></a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="timeline" id="timeline">
+        <!-- 卡片1 -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-left">
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="period-year">1946 – 1950</div>
+                        <div class="period-title">私立育英中学</div>
+                        <div class="period-sub"><i class="fas fa-church"></i> 教会办学 · 肇始之本</div>
+                    </div>
+                    <div class="card-summary">
+                        <div class="summary-text"><i class="fas fa-history"></i> 天主教会筹资创办，首批初中生，1947年备案定名“私立大同育英中学校”。解放前夕共233名学生，首开高中班招收女生。</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="details-inner">
+                            <div class="event-list">
+                                <div class="event-item"><span class="event-year-badge">1946 夏</span><div class="event-desc">天主教会筹资创办，校址位于大同和阳街南三元宫内（日占时期汽车修理厂改建），招收初中一年级插班班，条件简陋。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1947</span><div class="event-desc">获山西省教育厅备案，定名<strong>“私立大同育英中学校”</strong>；中国籍神父许德任校长，比利时籍神父邓惠普任学监，必修《圣经》及每日祈祷。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1948</span><div class="event-desc">首届初中生毕业，开创民办教育新篇章。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1949</span><div class="event-desc">大同解放后延续教会办学，暑期增设高中部，首招女生78名；全校共5个班（4初中+1高中），学生233人。</div></div>
+                            </div>
+                            <div class="stats-mini">
+                                <span><i class="fas fa-users"></i> 学生233人</span>
+                                <span><i class="fas fa-chalkboard"></i> 5个教学班</span>
+                                <span><i class="fas fa-pray"></i> 中西融合课程</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-right">
+                <div class="timeline-media" data-card-index="0">
+                    <div class="media-item"><img src="picture1.jpg" alt="育英中学历史影像" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-image\'></i> 图片待补充</div>'"><div class="media-caption">私立育英中学校址旧影</div></div>
+                </div>
+            </div>
+        </div>
+        <!-- 卡片2 -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-left">
+                <div class="timeline-media" data-card-index="1">
+                    <div class="media-item"><img src="picture2.jpg" alt="早期校园" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-image\'></i> 图片待补充</div>'"><div class="media-caption">1950年代校门掠影</div></div>
+                </div>
+            </div>
+            <div class="timeline-right">
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="period-year">1950 – 1952</div>
+                        <div class="period-title">政府接管 · 校名更迭</div>
+                        <div class="period-sub"><i class="fas fa-landmark"></i> 公立化转型 · 定名二中</div>
+                    </div>
+                    <div class="card-summary">
+                        <div class="summary-text"><i class="fas fa-exchange-alt"></i> 1950年人民政府接管，历经察哈尔省大同中学分校，1952年正式定名“山西省大同第二中学校”，班级扩至12个。</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="details-inner">
+                            <div class="event-list">
+                                <div class="event-item"><span class="event-year-badge">1950.3.12</span><div class="event-desc">大同市人民政府全面接管，更名为<strong>察哈尔省大同中学分校</strong>，卢学礼任分校主任；原高中生分流，保留3个教学班、118名学生、13名教职工。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1952.6.2</span><div class="event-desc">更名为<strong>察哈尔省大同第二中学校</strong>，购置邻院9处民房，校舍面积扩大。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1952年底</span><div class="event-desc">察哈尔省撤销，划归山西省管辖，正式定名<strong>山西省大同第二中学校</strong>；教学班增至12个，教职工46人。</div></div>
+                            </div>
+                            <div class="stats-mini">
+                                <span><i class="fas fa-school"></i> 12个教学班</span>
+                                <span><i class="fas fa-user-tie"></i> 46名教职工</span>
+                                <span><i class="fas fa-home"></i> 9处民房扩建</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 卡片3 -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-left">
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="period-year">1953 – 2000</div>
+                        <div class="period-title">城区办学 · 重点崛起</div>
+                        <div class="period-sub"><i class="fas fa-star-of-life"></i> 省首批重点 · 示范中学</div>
+                    </div>
+                    <div class="card-summary">
+                        <div class="summary-text"><i class="fas fa-chart-line"></i> 1956年成为完全中学，1980年确定为山西省首批重点中学，1990年代获评省示范中学，初中部长期全市领先。</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="details-inner">
+                            <div class="event-list">
+                                <div class="event-item"><span class="event-year-badge">1954-1955</span><div class="event-desc">在城内东仓新建校舍，1955年从三元宫旧址整体迁入新址，办学条件跨越提升。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1956</span><div class="event-desc">正式创办高中部，成为<strong>完全中学</strong>，奠定完中教育体系。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1980</span><div class="event-desc">被山西省教育厅确定为<strong>山西省首批重点中学</strong>，跻身全省基础教育前列。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1990年代</span><div class="event-desc">获评<strong>山西省示范中学</strong>，初中部长期位居大同市前列，教学质量享誉晋北。</div></div>
+                                <div class="event-item"><span class="event-year-badge">1998-2000</span><div class="event-desc">1998年全省43所示范校高考排名第八，1999年排名第四；每年近五百名学生升入高等院校。</div></div>
+                            </div>
+                            <div class="stats-mini">
+                                <span><i class="fas fa-trophy"></i> 首批重点(1980)</span>
+                                <span><i class="fas fa-chalkboard-user"></i> 完全中学格局</span>
+                                <span><i class="fas fa-ranking-star"></i> 初中全市前列</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-right">
+                <div class="timeline-media" data-card-index="2">
+                    <div class="media-item"><img src="picture3.jpg" alt="东仓校舍" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-image\'></i> 图片待补充</div>'"><div class="media-caption">东仓校区教学楼</div></div>
+                    <div class="media-item"><img src="picture4.jpg" alt="重点中学授牌" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-image\'></i> 图片待补充</div>'"><div class="media-caption">1981年省重点中学揭牌</div></div>
+                </div>
+            </div>
+        </div>
+        <!-- 卡片4：最后一个媒体项改为可点击的学校平面图（用户需提供 school_map.png），点击跳转百度地图 -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-left">
+                <div class="timeline-media" data-card-index="3">
+                    <div class="media-item"><img src="picture5.jpg" alt="御东新校区" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-image\'></i> 图片待补充</div>'"><div class="media-caption">御东校区全景</div></div>
+                    <!-- 学校平面图截图，用户需将文件命名为 school_map.png 并放在同一目录，点击跳转百度地图学校详情页 -->
+                    <a href="https://map.baidu.com/search/%E5%A4%A7%E5%90%8C%E5%B8%82%E7%AC%AC%E4%BA%8C%E4%B8%AD%E5%AD%A6%E6%A0%A1/@13495296.825,4583637.19,19z?querytype=s&da_src=shareurl&wd=%E5%A4%A7%E5%90%8C%E5%B8%82%E7%AC%AC%E4%BA%8C%E4%B8%AD%E5%AD%A6%E6%A0%A1&c=143" target="_blank" class="map-link-card">
+                        <div class="media-item" style="cursor: pointer;">
+                            <img src="school_map.png" alt="大同二中平面图" onerror="this.onerror=null; this.parentElement.style.backgroundColor='#f3ede3'; this.parentElement.innerHTML='<div style=\'padding:40px;text-align:center;color:#a58e72;\'><i class=\'fas fa-map-marked-alt\'></i> 请将学校平面图命名为 school_map.png 放在本目录下</div>'">
+                            <div class="media-caption">📌 学校平面图（点击查看百度地图位置）</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="timeline-right">
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="period-year">2001 – 至今</div>
+                        <div class="period-title">御东新校区 · 集团化跨越</div>
+                        <div class="period-sub"><i class="fas fa-charging-station"></i> 省示范高中 · 优质生源基地</div>
+                    </div>
+                    <div class="card-summary">
+                        <div class="summary-text"><i class="fas fa-building"></i> 2009年御东校区启用，成为省示范高中；近年高考成绩屡创新高，20余所高校优质生源基地。</div>
+                    </div>
+                    <div class="card-details">
+                        <div class="details-inner">
+                            <div class="event-list">
+                                <div class="event-item"><span class="event-year-badge">2003</span><div class="event-desc">高考成绩突出：王睿智获<strong>大同市文科状元</strong>，文科前六名该校占4席；1998-2003年初中毕业考试综合评价<strong>连续5年全市第一</strong>。</div></div>
+                                <div class="event-item"><span class="event-year-badge">2009</span><div class="event-desc">御东新区新校区建成（占地<strong>301亩</strong>，总建筑面积5.5万㎡），初中部、高中部整体迁入合并；同年被正式命名为<strong>山西省示范高中</strong>。</div></div>
+                                <div class="event-item"><span class="event-year-badge">2010年后</span><div class="event-desc">组建<strong>大同二中教育集团</strong>，设立南校区（恒源校区），集团化办学辐射优质资源。</div></div>
+                                <div class="event-item"><span class="event-year-badge">2016-2020</span><div class="event-desc">高考成绩稳步攀升，二本达线率从76.37%提升至93%以上；2017届李祁同学获市直中学理科总分第一。</div></div>
+                                <div class="event-item"><span class="event-year-badge">近年荣誉</span><div class="event-desc">荣获<strong>山西省文明单位</strong>、<strong>全国现代教育技术示范学校</strong>、<strong>全国课改先进集体</strong>；成为南开大学、北京航空航天大学、同济大学等20余所“双一流”高校优质生源基地。2021年被评为“山西省数字校园示范校”，2022年获“山西省防震减灾示范学校”，2023年再度获评“全国青少年校园足球特色学校”。</div></div>
+                                <div class="event-item"><span class="event-year-badge">二期建设</span><div class="event-desc">投资2.74亿元的高中部二期建设项目，涵盖餐厅、科技楼等，持续优化办学条件。</div></div>
+                            </div>
+                            <div class="stats-mini">
+                                <span><i class="fas fa-expand"></i> 301亩主校区</span>
+                                <span><i class="fas fa-graduation-cap"></i> 连续多年一本率攀升</span>
+                                <span><i class="fas fa-handshake"></i> 20+所高校生源基地</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 荣誉展示区 -->
+    <div class="honor-grid">
+        <div class="honor-title"><i class="fas fa-medal"></i> 荣光时刻 · 卓越足迹</div>
+        <div class="honor-cards">
+            <div class="honor-card"><i class="fas fa-chart-line"></i><h4>高考佳绩</h4><p>2016-2020年二本达线率由76.37%提升至93%以上，持续突破。</p></div>
+            <div class="honor-card"><i class="fas fa-trophy"></i><h4>初中领跑</h4><p>1998-2003年中考综合评价“五连冠”，晋北初中教育标杆。</p></div>
+            <div class="honor-card"><i class="fas fa-university"></i><h4>高校青睐</h4><p>南开大学、北航、同济等20余所“双一流”高校优质生源基地。</p></div>
+            <div class="honor-card"><i class="fas fa-leaf"></i><h4>集团化办学</h4><p>大同二中教育集团，南校区+主校区双翼驱动，引领区域教育均衡。</p></div>
+            <div class="honor-card"><i class="fas fa-award"></i><h4>国家级荣誉</h4><p>全国现代教育技术示范学校、全国课改先进集体、全国青少年校园足球特色学校。</p></div>
+            <div class="honor-card"><i class="fas fa-chalkboard"></i><h4>省级殊荣</h4><p>山西省文明单位、山西省数字校园示范校、山西省防震减灾示范学校。</p></div>
+        </div>
+        <div style="margin-top: 28px; background: #f9f2e8; border-radius: 28px; padding: 14px 20px; font-size: 0.9rem; text-align: center; color:#6f4f2e;">
+            <i class="fas fa-quote-left"></i> 承育英之文脉，启时代之新章——从三元宫到御东新区，大同二中始终秉承“明德至善，博学笃行”校训，为晋北大地培育万千英才。
+        </div>
+    </div>
+    <div class="legacy-footer">
+        <div class="school-motto">“明德至善 · 博学笃行”</div>
+        <div class="history-line">1946 - 2026 · 八十载赓续初心 | 私立育英 → 山西省大同第二中学校</div>
+        <div class="history-line">重熙校区（主校区）· 恒源校区（南校区） | 在校生5000余人</div>
+    </div>
+</div>
+<footer>
+    <i class="far fa-copyright"></i> 大同市第二中学校史档案 · 校训：明德至善，博学笃行
+</footer>
+<script>
+    (function() {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const cardDetailsList = [];
+        const mediaContainers = [];
+        timelineItems.forEach(item => {
+            const card = item.querySelector('.timeline-card');
+            if (card) cardDetailsList.push(card.querySelector('.card-details'));
+            else cardDetailsList.push(null);
+            mediaContainers.push(item.querySelector('.timeline-media'));
+        });
+        const mediaItemsPerCard = [];
+        mediaContainers.forEach(container => {
+            if (container) mediaItemsPerCard.push(Array.from(container.querySelectorAll('.media-item')));
+            else mediaItemsPerCard.push([]);
+        });
+        const imageShown = new Array(timelineItems.length).fill(false);
+        const transitionBound = new Array(timelineItems.length).fill(false);
+        function showImagesForCard(cardIndex) {
+            const mediaItems = mediaItemsPerCard[cardIndex];
+            if (!mediaItems.length) return;
+            mediaItems.forEach((item, i) => setTimeout(() => item.classList.add('visible'), i * 80));
+        }
+        function expandCardWithImages(cardIdx) {
+            const detailsElem = cardDetailsList[cardIdx];
+            if (!detailsElem || detailsElem.classList.contains('expanded')) return;
+            detailsElem.classList.add('expanded');
+            if (!transitionBound[cardIdx]) {
+                const handler = (e) => {
+                    if (e.target === detailsElem && e.propertyName === 'max-height') {
+                        if (!imageShown[cardIdx]) showImagesForCard(cardIdx), imageShown[cardIdx] = true;
+                        detailsElem.removeEventListener('transitionend', handler);
+                    }
+                };
+                detailsElem.addEventListener('transitionend', handler);
+                transitionBound[cardIdx] = true;
+            }
+        }
+        const TRIGGER_OFFSET = window.innerHeight * 0.35;
+        function expandVisibleCards() {
+            for (let i = 0; i < timelineItems.length; i++) {
+                const details = cardDetailsList[i];
+                if (!details || details.classList.contains('expanded')) continue;
+                const rect = timelineItems[i].getBoundingClientRect();
+                if (rect.top < TRIGGER_OFFSET + 120 && rect.bottom > TRIGGER_OFFSET - 80) expandCardWithImages(i);
+            }
+        }
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) requestAnimationFrame(() => { expandVisibleCards(); ticking = false; }), ticking = true;
+        }
+        window.addEventListener('load', () => setTimeout(expandVisibleCards, 100));
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('resize', expandVisibleCards);
+        document.addEventListener('DOMContentLoaded', () => setTimeout(expandVisibleCards, 50));
+        document.querySelectorAll('.media-item').forEach(el => {
+            if (!el.classList.contains('visible')) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease';
+            }
+        });
+        const style = document.createElement('style');
+        style.textContent = `.media-item.visible { opacity: 1 !important; transform: translateY(0) !important; }`;
+        document.head.appendChild(style);
+    })();
+</script>
+</body>
+</html>
