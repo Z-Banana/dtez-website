@@ -14,7 +14,6 @@ app.use(express.static('public'));
 const TURSO_URL = process.env.TURSO_DATABASE_URL;
 const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN;
 
-// 将 libsql:// 转换为 https:// 的 REST API 端点
 function getHttpUrl() {
     if (!TURSO_URL) return null;
     let url = TURSO_URL.replace('libsql://', 'https://');
@@ -23,25 +22,38 @@ function getHttpUrl() {
 }
 
 const httpUrl = getHttpUrl();
-let dbReady = false;   // 标记数据库是否可用
+let dbReady = false;
 
-// 执行 SQL（通过 HTTP POST）
+// 将普通参数转换为 Turso 要求的格式
+function formatArgs(args) {
+    if (!args || args.length === 0) return [];
+    return args.map(arg => ({
+        type: "text",
+        value: String(arg)
+    }));
+}
+
 async function executeSql(sql, args = []) {
     if (!httpUrl || !TURSO_TOKEN) throw new Error('Missing Turso credentials');
+    const formattedArgs = formatArgs(args);
+    const body = {
+        requests: [
+            {
+                type: "execute",
+                stmt: {
+                    sql: sql,
+                    args: formattedArgs
+                }
+            }
+        ]
+    };
     const response = await fetch(`${httpUrl}/v2/pipeline`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${TURSO_TOKEN}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            requests: [
-                {
-                    type: "execute",
-                    stmt: { sql, args }
-                }
-            ]
-        })
+        body: JSON.stringify(body)
     });
     if (!response.ok) {
         const errorText = await response.text();
@@ -53,16 +65,22 @@ async function executeSql(sql, args = []) {
     return result;
 }
 
-// 查询多行
 async function queryRows(sql, args = []) {
     const result = await executeSql(sql, args);
-    return result.response?.result?.rows || [];
+    const rows = result.response?.result?.rows || [];
+    // 将行数据中的列转换为简单对象（因为Turso返回的每行是数组）
+    const columns = result.response?.result?.cols || [];
+    return rows.map(row => {
+        const obj = {};
+        columns.forEach((col, idx) => {
+            obj[col.name] = row[idx];
+        });
+        return obj;
+    });
 }
 
-// 初始化数据库（创建表、插入示例数据）
 async function initDatabaseHttp() {
     try {
-        // 创建表
         await executeSql(`
             CREATE TABLE IF NOT EXISTS blessings (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,7 +89,6 @@ async function initDatabaseHttp() {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        // 检查是否有数据
         const rows = await queryRows('SELECT COUNT(*) as count FROM blessings');
         const count = rows[0]?.count || 0;
         if (count === 0) {
@@ -99,12 +116,7 @@ function initMemoryStorage() {
 async function getAllBlessings() {
     if (dbReady) {
         const rows = await queryRows('SELECT id, nickname, message, created_at FROM blessings ORDER BY created_at DESC');
-        return rows.map(row => ({
-            id: row.id,
-            nickname: row.nickname,
-            message: row.message,
-            created_at: row.created_at
-        }));
+        return rows;
     } else {
         return [...blessingsMemory].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     }
@@ -150,15 +162,11 @@ app.post('/api/blessings', async (req, res) => {
     }
 });
 
-// 健康检查
 app.get('/health', (req, res) => res.send('OK'));
-
-// 前端路由 fallback
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// 启动服务器
 app.listen(PORT, '0.0.0.0', async () => {
     console.log(`🎉 校庆网站服务已启动，监听 0.0.0.0:${PORT}`);
     if (httpUrl && TURSO_TOKEN) {
