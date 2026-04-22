@@ -10,27 +10,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// ==================== Turso HTTP API 封装 ====================
+// ==================== Turso HTTP API 配置 ====================
 const TURSO_URL = process.env.TURSO_DATABASE_URL;
 const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN;
 
-let useHttpApi = false;
-let httpUrl = null;
-
-// 将 libsql:// 或 http:// 转换为 https:// 的 REST API 端点
+// 将 libsql:// 转换为 https:// 的 REST API 端点
 function getHttpUrl() {
     if (!TURSO_URL) return null;
-    // Turso HTTP API 地址格式：https://数据库名.turso.io
     let url = TURSO_URL.replace('libsql://', 'https://');
     if (!url.startsWith('https://')) url = 'https://' + url;
-    // 移除末尾斜杠
     return url.replace(/\/$/, '');
 }
 
-// 执行 SQL (通过 HTTP POST)
+const httpUrl = getHttpUrl();
+let dbReady = false;   // 标记数据库是否可用
+
+// 执行 SQL（通过 HTTP POST）
 async function executeSql(sql, args = []) {
-    if (!useHttpApi) throw new Error('HTTP API not available');
-    // 注意：Turso HTTP API 的请求体格式
+    if (!httpUrl || !TURSO_TOKEN) throw new Error('Missing Turso credentials');
     const response = await fetch(`${httpUrl}/v2/pipeline`, {
         method: 'POST',
         headers: {
@@ -51,7 +48,6 @@ async function executeSql(sql, args = []) {
         throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
     const data = await response.json();
-    // 返回结果的第一条响应的结果
     const result = data.results?.[0];
     if (result?.error) throw new Error(result.error.message);
     return result;
@@ -63,7 +59,7 @@ async function queryRows(sql, args = []) {
     return result.response?.result?.rows || [];
 }
 
-// 初始化数据库表
+// 初始化数据库（创建表、插入示例数据）
 async function initDatabaseHttp() {
     try {
         // 创建表
@@ -75,7 +71,7 @@ async function initDatabaseHttp() {
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        // 检查是否有数据，如果没有则插入示例
+        // 检查是否有数据
         const rows = await queryRows('SELECT COUNT(*) as count FROM blessings');
         const count = rows[0]?.count || 0;
         if (count === 0) {
@@ -101,7 +97,7 @@ function initMemoryStorage() {
 }
 
 async function getAllBlessings() {
-    if (useHttpApi) {
+    if (dbReady) {
         const rows = await queryRows('SELECT id, nickname, message, created_at FROM blessings ORDER BY created_at DESC');
         return rows.map(row => ({
             id: row.id,
@@ -115,7 +111,7 @@ async function getAllBlessings() {
 }
 
 async function addBlessing(nickname, message) {
-    if (useHttpApi) {
+    if (dbReady) {
         const result = await executeSql('INSERT INTO blessings (nickname, message) VALUES (?, ?)', [nickname, message]);
         const lastId = result.response?.result?.lastInsertRowid || Date.now();
         return { id: lastId };
@@ -165,24 +161,18 @@ app.get('*', (req, res) => {
 // 启动服务器
 app.listen(PORT, '0.0.0.0', async () => {
     console.log(`🎉 校庆网站服务已启动，监听 0.0.0.0:${PORT}`);
-    if (TURSO_URL && TURSO_TOKEN) {
-        httpUrl = getHttpUrl();
-        if (httpUrl) {
-            const success = await initDatabaseHttp();
-            if (success) {
-                useHttpApi = true;
-                console.log('💾 当前使用 Turso 数据库（持久存储）');
-            } else {
-                initMemoryStorage();
-                console.warn('⚠️ 当前使用内存存储（重启后数据丢失）');
-            }
+    if (httpUrl && TURSO_TOKEN) {
+        const success = await initDatabaseHttp();
+        if (success) {
+            dbReady = true;
+            console.log('💾 当前使用 Turso 数据库（持久存储）');
         } else {
             initMemoryStorage();
-            console.warn('⚠️ 无法解析数据库URL，使用内存存储');
+            console.warn('⚠️ 当前使用内存存储（重启后数据丢失）');
         }
     } else {
         initMemoryStorage();
-        console.warn('⚠️ 未设置环境变量，使用内存存储');
-        console.log('💡 提示：请在 Pxxl App 环境变量中设置 TURSO_DATABASE_URL 和 TURSO_AUTH_TOKEN');
+        console.warn('⚠️ 未设置有效的环境变量，使用内存存储');
+        console.log('💡 提示：请在 Pxxl App 环境变量中正确设置 TURSO_DATABASE_URL 和 TURSO_AUTH_TOKEN');
     }
 });
