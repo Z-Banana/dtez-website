@@ -1,20 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log('=== 极简测试服务器启动 ===');
+console.log('=== 测试 dotenv 和环境变量 ===');
 console.log('PORT:', PORT);
+console.log('TURSO_DATABASE_URL 存在?', !!process.env.TURSO_DATABASE_URL);
+console.log('TURSO_AUTH_TOKEN 存在?', !!process.env.TURSO_AUTH_TOKEN);
 
 app.get('/', (req, res) => {
-  res.send('Hello! 大同二中校庆网站正在调试中。如果看到这条消息，说明服务器运行正常。');
+  res.send('环境变量加载测试成功。数据库配置' + (process.env.TURSO_DATABASE_URL ? '已' : '未') + '设置。');
 });
 
-// 健康检查端点
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
+app.get('/health', (req, res) => res.send('OK'));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ 服务器已启动，监听 0.0.0.0:${PORT}`);
-  console.log(`访问地址: http://0.0.0.0:${PORT}`);
+  console.log(`✅ 服务器启动在 0.0.0.0:${PORT}`);
 });
