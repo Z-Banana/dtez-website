@@ -2,67 +2,124 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大同市第二中学 · 校庆盛典</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>大同市第二中学 · 辉煌校庆</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="bg-decoration"></div>
-    <div class="container">
-        <header class="hero-section">
-            <h1 class="school-name">大同市第二中学</h1>
-            <p class="anniversary-text">建校 <span id="anniversary-years">78</span> 周年 · 盛世华诞</p>
-            <div class="gold-line"></div>
-        </header>
+    <!-- 动态背景装饰 -->
+    <div class="orb-bg"></div>
+    <div class="gradient-overlay"></div>
 
-        <section class="countdown-section card-glow">
-            <h2><i class="fas fa-hourglass-half"></i> 校庆倒计时</h2>
-            <div class="countdown-timer" id="countdown">
-                <div class="time-block"><span id="days">00</span><span class="label">天</span></div>
-                <div class="time-block"><span id="hours">00</span><span class="label">时</span></div>
-                <div class="time-block"><span id="minutes">00</span><span class="label">分</span></div>
-                <div class="time-block"><span id="seconds">00</span><span class="label">秒</span></div>
+    <div class="container">
+        <!-- 导航栏（简约） -->
+        <nav class="glass-nav">
+            <div class="nav-logo">
+                <i class="fas fa-school"></i>
+                <span>大同二中</span>
             </div>
-            <p class="event-date">📍 2026年10月18日 · 大同二中校园</p>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#blessing">祝福墙</a>
+                <a href="#timeline">校史</a>
+            </div>
+        </nav>
+
+        <!-- Hero 主视觉 -->
+        <section class="hero" id="home">
+            <div class="hero-badge">建校78周年</div>
+            <h1 class="hero-title">
+                <span class="title-line">大同市第二中学</span>
+                <span class="title-sub">盛世华诞 · 薪火相传</span>
+            </h1>
+            <div class="hero-gold-line"></div>
+            <p class="hero-desc">七十八载砥砺前行，万千桃李共谱华章</p>
         </section>
 
-        <div class="two-columns">
-            <section class="music-player card-glow">
-                <h2><i class="fas fa-music"></i> 校歌 · 青春回响</h2>
-                <div class="player-wrapper">
-                    <div class="album-art"><i class="fas fa-school"></i></div>
-                    <div class="song-info"><h3>托起明天的太阳</h3><p>大同市第二中学校歌</p></div>
-                    <audio id="schoolAnthem" src="/audio/school_anthem.mp3" preload="metadata"></audio>
-                    <div class="player-controls">
-                        <button id="playPauseBtn" class="control-btn"><i class="fas fa-play"></i></button>
-                        <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-                        <span id="currentTime" class="time">0:00</span><span id="duration" class="time">0:00</span>
+        <!-- 倒计时卡片（华丽） -->
+        <section class="countdown-card">
+            <div class="countdown-inner">
+                <h2><i class="fas fa-hourglass-half"></i> 校庆盛典倒计时</h2>
+                <div class="countdown-timer" id="countdown">
+                    <div class="time-block"><span id="days">00</span><span>天</span></div>
+                    <div class="time-block"><span id="hours">00</span><span>时</span></div>
+                    <div class="time-block"><span id="minutes">00</span><span>分</span></div>
+                    <div class="time-block"><span id="seconds">00</span><span>秒</span></div>
+                </div>
+                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 2026年10月18日 · 大同二中校园</p>
+            </div>
+        </section>
+
+        <!-- 双栏：校歌播放器 + 祝福墙 -->
+        <div class="double-grid">
+            <!-- 校歌播放器卡片 -->
+            <div class="music-card glass-card">
+                <div class="card-header">
+                    <i class="fas fa-music"></i>
+                    <h2>校歌 · 青春回响</h2>
+                </div>
+                <div class="music-cover">
+                    <div class="vinyl"><i class="fas fa-play-circle"></i></div>
+                </div>
+                <div class="song-info">
+                    <h3>托起明天的太阳</h3>
+                    <p>大同市第二中学校歌</p>
+                </div>
+                <audio id="schoolAnthem" src="/audio/school_anthem.mp3" preload="metadata"></audio>
+                <div class="music-controls">
+                    <button id="playPauseBtn" class="play-btn"><i class="fas fa-play"></i></button>
+                    <div class="progress-area">
+                        <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
+                        <div class="time-info"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section class="blessing-wall card-glow">
-                <h2><i class="fas fa-heart"></i> 校庆祝福墙</h2>
-                <div class="blessing-form">
-                    <input type="text" id="nickname" placeholder="您的姓名/昵称" maxlength="20">
-                    <textarea id="message" rows="3" placeholder="写下对母校的祝福..." maxlength="200"></textarea>
-                    <button id="sendBlessingBtn"><i class="fas fa-paper-plane"></i> 发送祝福</button>
+            <!-- 祝福墙卡片 -->
+            <div class="blessing-card glass-card" id="blessing">
+                <div class="card-header">
+                    <i class="fas fa-heart"></i>
+                    <h2>校庆祝福墙</h2>
                 </div>
-                <div class="blessings-list" id="blessingsList"><div class="loading">✨ 加载祝福中...</div></div>
-            </section>
+                <div class="blessing-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nickname" placeholder="您的姓名 / 昵称" maxlength="20">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-comment"></i>
+                        <textarea id="message" rows="2" placeholder="写下对母校的祝福..." maxlength="200"></textarea>
+                    </div>
+                    <button id="sendBlessingBtn"><i class="fas fa-paper-plane"></i> 传递祝福</button>
+                </div>
+                <div class="blessings-list" id="blessingsList">
+                    <div class="loading-state"><i class="fas fa-spinner fa-pulse"></i> 加载祝福中...</div>
+                </div>
+            </div>
         </div>
 
-        <section class="timeline-section card-glow">
-            <h2><i class="fas fa-landmark"></i> 薪火相传 · 校史长廊</h2>
-            <div class="timeline-iframe-container">
-                <iframe src="/timeline.html" title="大同二中校史时间轴" loading="lazy"></iframe>
+        <!-- 校史时间轴（全宽卡片） -->
+        <section class="timeline-card glass-card" id="timeline">
+            <div class="card-header">
+                <i class="fas fa-landmark"></i>
+                <h2>薪火相传 · 校史长廊</h2>
+            </div>
+            <div class="timeline-iframe-wrapper">
+                <iframe src="/timeline.html" title="大同二中校史" loading="lazy"></iframe>
             </div>
         </section>
 
-        <footer><p>© 2026 大同市第二中学 · 校庆筹备委员会 | 云上同庆，共谱华章</p></footer>
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2026 大同市第二中学 · 校庆筹备委员会 | 云端共庆，同谱华章</p>
+            <div class="footer-decoration"></div>
+        </footer>
     </div>
+
     <script src="/js/script.js"></script>
 </body>
 </html>
